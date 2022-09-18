@@ -7,7 +7,7 @@ import { styles } from './styles';
 import { THEME } from '../../theme';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView}  from 'react-native-safe-area-context'
-import { View, TouchableOpacity, Image, FlatList } from 'react-native';
+import { View, TouchableOpacity, Image, FlatList, Text } from 'react-native';
 import logoImg from '../../assets/logo-nlw-esports.png'
 import { useEffect, useState } from 'react';
 
@@ -68,9 +68,14 @@ export function Game() {
                 onConnect={() => {}}/>
             )}
             horizontal
-            contentContainerStyle={styles.contentList}
+            contentContainerStyle={duos.length > 0? styles.contentList : styles.emptylistContent}
             showsHorizontalScrollIndicator={false}
             style={styles.containerList}
+            ListEmptyComponent={() => (
+              <Text style={styles.emptylistText}>
+                Não há anúncios publicados ainda.
+              </Text>
+            )}
           />
           
 
