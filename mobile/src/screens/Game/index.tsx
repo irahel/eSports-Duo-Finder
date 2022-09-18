@@ -1,6 +1,7 @@
 import { Background } from '../../components/Background';
 import { Heading} from '../../components/Heading'
 import { DuoCard, DuoCardProps} from '../../components/DuoCard'
+import { DuoMatch } from '../../components/DuoMatch';
 import { GameParams } from '../../@types/navigation';
 import { Entypo } from '@expo/vector-icons';
 import { styles } from './styles';
@@ -11,8 +12,11 @@ import { View, TouchableOpacity, Image, FlatList, Text } from 'react-native';
 import logoImg from '../../assets/logo-nlw-esports.png'
 import { useEffect, useState } from 'react';
 
+//TODO: 
+// adicionar notificações
 export function Game() {
   const [duos, setDuos] = useState<DuoCardProps[]>([]);
+  const [discordDuoSelected, setDiscordDuoSelected] = useState('');
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -21,6 +25,13 @@ export function Game() {
   function handleGoBack() {
     navigation.goBack();
   }
+
+  async function getDiscordUser(adsId: string) {
+    fetch(`http://192.168.0.5:3333/ads/${adsId}/discord`)
+    .then(res => res.json())
+    .then(data => setDiscordDuoSelected(data.discord));
+  }
+
 
   useEffect(() => {
     fetch(`http://192.168.0.5:3333/games/${game.id}/ads`)
@@ -65,7 +76,7 @@ export function Game() {
             renderItem={({item}) => (
               <DuoCard 
                 data={item}
-                onConnect={() => {}}/>
+                onConnect={() => getDiscordUser(item.id)}/>
             )}
             horizontal
             contentContainerStyle={duos.length > 0? styles.contentList : styles.emptylistContent}
@@ -77,7 +88,13 @@ export function Game() {
               </Text>
             )}
           />
-          
+
+          <DuoMatch
+            onClose={() => setDiscordDuoSelected('')}
+            discord={discordDuoSelected}
+            visible={discordDuoSelected.length > 0}
+          />           
+
 
         </SafeAreaView>
     </Background>
