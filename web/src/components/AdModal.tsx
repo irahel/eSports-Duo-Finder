@@ -13,7 +13,11 @@ interface Game{
 
 //TODO:
 // code radix-select
-// validação
+// validação react-hook-form
+// Responsividade
+// Carrosel com keen-slider
+// Logar com o discord?
+
 export function AdModal(){
 
     const [games, setGames] = useState<Game[]>([])
@@ -31,27 +35,27 @@ export function AdModal(){
         event.preventDefault();
 
         const formData = new FormData(event.target as HTMLFormElement);
-        const data = Object.fromEntries(formData);
-        console.log(data);
+        const data = Object.fromEntries(formData);     
 
         if (!data.name){
             return
         }
-
+        
         try{
             await axios.post(`http://localhost:3333/games/${data.game}/ads`, {
                 name: data.name,
                 yearPlaying: Number(data.yearPlaying),
                 discord: data.discord,
                 weekDays: weekDays.map(Number),
-                hoursStart: data.hoursStart,
-                hoursEnd: data.hoursEnd,
+                hoursStart: data.hourStart,
+                hoursEnd: data.hourEnd,
                 useVoiceChannel: useVoiceChannel
             })
             alert('Anúncio criado com sucesso!')
         } catch(err) {
             alert('Erro ao criar o anúncio')
         }  
+        
             
     }
 
@@ -87,8 +91,8 @@ export function AdModal(){
 
           <div className="grid grid-cols-2 gap-6">
             <div className="flex flex-col gap-2">
-              <label htmlFor="yearsPlaying">Joga há quantos anos?</label>
-              <Input name="yearsPlaying" id ="yearsPlaying" type="number" placeholder="Tudo bem ser ZERO"/>
+              <label htmlFor="yearPlaying">Joga há quantos anos?</label>
+              <Input name="yearPlaying" id ="yearPlaying" type="number" placeholder="Tudo bem ser ZERO"/>
             </div>
             <div className="flex flex-col gap-2">
             <label htmlFor="discord">Qual seu discord?</label>
