@@ -40,7 +40,4 @@ export const styles = StyleSheet.create({
         borderRadius: 4,
         marginBottom: 32
       }
-      
-
-
 });
